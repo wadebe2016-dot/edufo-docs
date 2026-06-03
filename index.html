@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Documentation Edufo — Manuel utilisateur</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1E3A8A;
+    --navy-d: #16306e;
+    --navy-l: #2E4D9B;
+    --gold: #F59E0B;
+    --green: #007A5E;
+    --red: #CE1126;
+    --ink: #0F172A;
+    --muted: #64748B;
+    --line: #E2E8F0;
+    --bg: #F8FAFC;
+    --bg-soft: #EFF3FA;
+    --serif: 'Fraunces', Georgia, serif;
+    --sans: 'Public Sans', system-ui, sans-serif;
+    --sidebar-w: 286px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--sans); color: var(--ink); background: var(--bg); line-height: 1.65; font-size: 15.5px; }
+  a { color: var(--navy); }
+
+  /* Bandeau drapeau */
+  .flag-bar { height: 4px; display: flex; }
+  .flag-bar span { flex: 1; }
+  .flag-bar .g { background: var(--green); }
+  .flag-bar .r { background: var(--red); }
+  .flag-bar .y { background: var(--gold); }
+
+  /* Layout */
+  .wrap { display: flex; min-height: 100vh; }
+
+  /* Sidebar */
+  .sidebar {
+    width: var(--sidebar-w); flex-shrink: 0; background: #fff; border-right: 1px solid var(--line);
+    position: sticky; top: 0; height: 100vh; overflow-y: auto; padding: 22px 0;
+  }
+  .brand { display: flex; align-items: center; gap: 12px; padding: 0 22px 18px; border-bottom: 1px solid var(--line); margin-bottom: 14px; }
+  .brand .logo {
+    width: 42px; height: 42px; border-radius: 10px; background: var(--navy);
+    display: flex; align-items: center; justify-content: center; color: #fff;
+    font-family: var(--serif); font-size: 22px; font-weight: 600; flex-shrink: 0;
+  }
+  .brand .name { font-family: var(--serif); font-size: 19px; color: var(--navy); line-height: 1.1; }
+  .brand .sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  .search { padding: 0 18px 14px; }
+  .search input {
+    width: 100%; padding: 9px 12px; border: 1px solid var(--line); border-radius: 9px;
+    font: inherit; font-size: 13.5px; background: var(--bg);
+  }
+  .search input:focus { outline: none; border-color: var(--navy); background: #fff; }
+
+  .toc { padding: 0 12px; }
+  .toc .group { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: #94A3B8; font-weight: 700; padding: 14px 10px 6px; }
+  .toc a {
+    display: block; padding: 7px 10px; border-radius: 8px; color: #334155; text-decoration: none;
+    font-size: 13.7px; font-weight: 500; transition: background .15s, color .15s;
+  }
+  .toc a:hover { background: var(--bg-soft); color: var(--navy); }
+  .toc a.active { background: var(--navy); color: #fff; }
+
+  /* Content */
+  .content { flex: 1; min-width: 0; }
+  .content-inner { max-width: 820px; margin: 0 auto; padding: 50px 48px 120px; }
+
+  .hero { margin-bottom: 46px; }
+  .hero .kicker { color: var(--gold); font-weight: 700; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }
+  .hero h1 { font-family: var(--serif); font-size: 44px; font-weight: 600; line-height: 1.08; color: var(--navy); margin: 8px 0 14px; }
+  .hero p { font-size: 17px; color: var(--muted); max-width: 640px; }
+  .hero .meta { margin-top: 18px; display: flex; gap: 10px; flex-wrap: wrap; }
+  .hero .chip { background: #fff; border: 1px solid var(--line); border-radius: 999px; padding: 5px 13px; font-size: 12.5px; color: var(--muted); font-weight: 600; }
+
+  section.doc { scroll-margin-top: 20px; padding: 30px 0; border-top: 1px solid var(--line); }
+  section.doc:first-of-type { border-top: none; }
+  section.doc > h2 {
+    font-family: var(--serif); font-size: 27px; font-weight: 600; color: var(--navy);
+    margin-bottom: 6px; display: flex; align-items: center; gap: 11px;
+  }
+  section.doc > h2 .ic { font-size: 24px; }
+  section.doc .lead { color: var(--muted); font-size: 15.5px; margin-bottom: 18px; }
+  section.doc h3 { font-family: var(--serif); font-size: 18px; font-weight: 600; color: var(--ink); margin: 24px 0 8px; }
+  section.doc p { margin-bottom: 12px; }
+  section.doc ul, section.doc ol { margin: 0 0 14px 22px; }
+  section.doc li { margin-bottom: 6px; }
+  section.doc strong { color: var(--ink); font-weight: 600; }
+
+  .steps { counter-reset: step; list-style: none; margin-left: 0 !important; }
+  .steps li { position: relative; padding-left: 40px; margin-bottom: 12px; }
+  .steps li::before {
+    counter-increment: step; content: counter(step);
+    position: absolute; left: 0; top: -1px; width: 26px; height: 26px;
+    background: var(--navy); color: #fff; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700;
+  }
+
+  .callout { border-radius: 11px; padding: 13px 16px; margin: 16px 0; font-size: 14.5px; }
+  .callout.tip { background: #ECFDF5; border: 1px solid #6EE7B7; }
+  .callout.tip .t { color: #047857; font-weight: 700; }
+  .callout.warn { background: #FEFCF5; border: 1px solid #FAC775; }
+  .callout.warn .t { color: #92400E; font-weight: 700; }
+  .callout.info { background: #EFF6FF; border: 1px solid #BFDBFE; }
+  .callout.info .t { color: var(--navy); font-weight: 700; }
+  .callout .t { display: block; margin-bottom: 3px; font-size: 13px; text-transform: uppercase; letter-spacing: .03em; }
+
+  .role-tags { display: flex; gap: 6px; flex-wrap: wrap; margin: 4px 0 14px; }
+  .role-tags .rt { font-size: 11.5px; font-weight: 600; padding: 3px 10px; border-radius: 999px; background: var(--bg-soft); color: var(--navy); border: 1px solid var(--line); }
+
+  table.tbl { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14px; }
+  table.tbl th, table.tbl td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); }
+  table.tbl th { background: var(--bg-soft); color: var(--navy); font-weight: 600; font-size: 12.5px; text-transform: uppercase; letter-spacing: .03em; }
+
+  .glossary dt { font-weight: 700; color: var(--navy); margin-top: 12px; }
+  .glossary dd { margin-left: 0; color: var(--muted); }
+
+  footer.docfoot { border-top: 1px solid var(--line); padding-top: 22px; margin-top: 30px; color: var(--muted); font-size: 13.5px; }
+  footer.docfoot a { font-weight: 600; }
+
+  .no-result { display: none; color: var(--muted); font-style: italic; padding: 20px 0; }
+
+  /* Mobile */
+  .menu-btn { display: none; }
+  @media (max-width: 900px) {
+    .sidebar {
+      position: fixed; left: 0; top: 0; z-index: 50; transform: translateX(-100%);
+      transition: transform .25s ease; box-shadow: 0 0 40px rgba(0,0,0,.15);
+    }
+    .sidebar.open { transform: translateX(0); }
+    .menu-btn {
+      display: flex; align-items: center; gap: 8px; position: fixed; top: 14px; left: 14px; z-index: 40;
+      background: var(--navy); color: #fff; border: none; padding: 10px 14px; border-radius: 9px;
+      font: inherit; font-weight: 600; font-size: 14px; cursor: pointer; box-shadow: 0 4px 14px rgba(30,58,138,.3);
+    }
+    .content-inner { padding: 70px 22px 90px; }
+    .hero h1 { font-size: 33px; }
+    .overlay-m { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.35); z-index: 45; }
+    .overlay-m.show { display: block; }
+  }
+</style>
+</head>
+<body>
+<div class="flag-bar"><span class="g"></span><span class="r"></span><span class="y"></span></div>
+
+<button class="menu-btn" onclick="toggleMenu()">☰ Sommaire</button>
+<div class="overlay-m" id="overlayM" onclick="toggleMenu()"></div>
+
+<div class="wrap">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="logo">E</div>
+      <div>
+        <div class="name">Edufo</div>
+        <div class="sub">Manuel utilisateur</div>
+      </div>
+    </div>
+    <div class="search">
+      <input type="text" id="searchInput" placeholder="🔍 Rechercher dans la doc…" oninput="filterToc(this.value)" />
+    </div>
+    <nav class="toc" id="toc">
+      <div class="group">Démarrer</div>
+      <a href="#intro">Présentation</a>
+      <a href="#connexion">Connexion & rôles</a>
+      <a href="#navigation">Navigation générale</a>
+      <div class="group">Gestion scolaire</div>
+      <a href="#dashboard">Tableau de bord</a>
+      <a href="#eleves">Élèves</a>
+      <a href="#classes">Classes & cycles</a>
+      <a href="#personnel">Personnel</a>
+      <a href="#matieres">Matières</a>
+      <div class="group">Pédagogie</div>
+      <a href="#notes">Notes</a>
+      <a href="#bulletins">Bulletins</a>
+      <a href="#presence">Présence</a>
+      <a href="#discipline">Discipline</a>
+      <a href="#infirmerie">Infirmerie</a>
+      <div class="group">Finances</div>
+      <a href="#scolarite">Scolarité & paiements</a>
+      <a href="#campay">Mobile Money (Campay)</a>
+      <a href="#df">Direction financière</a>
+      <div class="group">Autres</div>
+      <a href="#edt">Emploi du temps</a>
+      <a href="#parent">Espace parent</a>
+      <a href="#comptes">Comptes & sécurité</a>
+      <a href="#glossaire">Glossaire</a>
+      <a href="#faq">Dépannage (FAQ)</a>
+    </nav>
+  </aside>
+
+  <!-- CONTENT -->
+  <main class="content">
+    <div class="content-inner">
+      <div class="hero">
+        <div class="kicker">Documentation officielle</div>
+        <h1>Manuel utilisateur Edufo</h1>
+        <p>Tout ce qu'il faut savoir pour gérer votre établissement avec Edufo : inscriptions, notes, bulletins, scolarité, paiements Mobile Money et espace parent.</p>
+        <div class="meta">
+          <span class="chip">Version 1.0</span>
+          <span class="chip">Atlastech Solution</span>
+          <span class="chip">Douala, Cameroun</span>
+          <span class="chip">Français</span>
+        </div>
+      </div>
+
+      <p class="no-result" id="noResult">Aucune section ne correspond à votre recherche.</p>
+
+      <!-- INTRO -->
+      <section class="doc" id="intro">
+        <h2><span class="ic">📘</span> Présentation</h2>
+        <p class="lead">Edufo est une plateforme de gestion scolaire pensée pour les établissements camerounais (francophones, anglophones, généraux et techniques).</p>
+        <p>Edufo réunit dans une seule application tous les outils de gestion d'un établissement : le suivi des élèves et des classes, la saisie des notes et l'édition des bulletins, la gestion de la scolarité avec encaissement par Mobile Money, le suivi de la discipline et de l'infirmerie, ainsi qu'un espace réservé aux parents.</p>
+        <p>L'application s'adapte au système éducatif de chaque école grâce à la notion de <strong>cycle</strong> (premier et second cycle) et à un affichage bilingue français / anglais.</p>
+        <div class="callout info"><span class="t">À noter</span> Chaque utilisateur ne voit que les modules correspondant à son rôle. Le présent manuel décrit l'ensemble des fonctionnalités ; certaines ne seront pas visibles selon votre profil.</div>
+      </section>
+
+      <!-- CONNEXION -->
+      <section class="doc" id="connexion">
+        <h2><span class="ic">🔑</span> Connexion & rôles</h2>
+        <p class="lead">Chaque membre du personnel dispose d'un compte personnel avec un rôle qui détermine ses accès.</p>
+        <h3>Se connecter</h3>
+        <ol class="steps">
+          <li>Ouvrez l'adresse de votre école (par exemple <strong>ecole.edufo.cm</strong>).</li>
+          <li>Saisissez votre adresse e-mail et votre mot de passe.</li>
+          <li>À la première connexion, vous devrez choisir un nouveau mot de passe.</li>
+        </ol>
+        <h3>Les rôles disponibles</h3>
+        <table class="tbl">
+          <thead><tr><th>Rôle</th><th>Accès principal</th></tr></thead>
+          <tbody>
+            <tr><td>Directeur</td><td>Tous les modules (vision complète de l'établissement)</td></tr>
+            <tr><td>Secrétariat</td><td>Élèves, classes, personnel, matières, emploi du temps, discipline</td></tr>
+            <tr><td>Économe</td><td>Scolarité, paiements, direction financière, classes</td></tr>
+            <tr><td>Enseignant</td><td>Notes, bulletins, présence, emploi du temps, discipline</td></tr>
+            <tr><td>Infirmière</td><td>Infirmerie</td></tr>
+            <tr><td>Surveillant général</td><td>Discipline, présence, classes, emploi du temps</td></tr>
+            <tr><td>Informaticien</td><td>Configuration large (gestion des comptes incluse)</td></tr>
+          </tbody>
+        </table>
+        <div class="callout warn"><span class="t">Sécurité</span> Ne partagez jamais votre mot de passe. Le directeur ou l'informaticien peut réinitialiser le mot de passe d'un compte si nécessaire.</div>
+      </section>
+
+      <!-- NAVIGATION -->
+      <section class="doc" id="navigation">
+        <h2><span class="ic">🧭</span> Navigation générale</h2>
+        <p class="lead">L'interface se compose d'une barre supérieure, d'un menu latéral et d'une zone de contenu.</p>
+        <ul>
+          <li><strong>Barre supérieure</strong> : nom de l'école, sélecteur d'année scolaire, aide, notifications et votre profil (cliquez dessus pour vous déconnecter).</li>
+          <li><strong>Menu latéral</strong> : la liste des modules accessibles selon votre rôle.</li>
+          <li><strong>Sélecteur d'année</strong> : en haut à droite. La plupart des écrans affichent les données de l'année sélectionnée — vérifiez toujours qu'elle est correcte.</li>
+        </ul>
+        <div class="callout tip"><span class="t">Astuce</span> Le bouton « Aide » en haut ouvre une FAQ adaptée à votre rôle, sans quitter l'application.</div>
+      </section>
+
+      <!-- DASHBOARD -->
+      <section class="doc" id="dashboard">
+        <h2><span class="ic">📊</span> Tableau de bord</h2>
+        <div class="role-tags"><span class="rt">Directeur</span><span class="rt">Secrétariat</span><span class="rt">Économe</span></div>
+        <p class="lead">Une vue d'ensemble chiffrée de l'établissement.</p>
+        <p>Le tableau de bord des élèves présente le nombre d'élèves inscrits, d'élèves actifs, de redoublants et de classes. Il affiche aussi le ratio filles / garçons, la répartition des élèves par cycle (premier et second) et l'effectif de chaque classe.</p>
+        <p>Vous pouvez filtrer par classe pour concentrer l'affichage sur un groupe précis.</p>
+      </section>
+
+      <!-- ELEVES -->
+      <section class="doc" id="eleves">
+        <h2><span class="ic">🎓</span> Élèves</h2>
+        <div class="role-tags"><span class="rt">Directeur</span><span class="rt">Secrétariat</span></div>
+        <p class="lead">Inscription et suivi du dossier de chaque élève.</p>
+        <h3>Inscrire un élève</h3>
+        <ol class="steps">
+          <li>Cliquez sur « Nouvel élève ».</li>
+          <li>Renseignez l'identité (nom, prénom, sexe, date et lieu de naissance) et le matricule.</li>
+          <li>Affectez l'élève à une classe et indiquez s'il est redoublant.</li>
+          <li>Saisissez les coordonnées du parent, en particulier le <strong>numéro de téléphone</strong>.</li>
+        </ol>
+        <div class="callout warn"><span class="t">Important</span> Saisissez le numéro de téléphone du parent toujours de la même façon. C'est lui qui permet de regrouper les frères et sœurs dans l'espace parent. Un même numéro = une même famille.</div>
+        <h3>Modifier un dossier</h3>
+        <p>Ouvrez la fiche d'un élève pour mettre à jour ses informations, voir l'historique de ses paiements ou copier son lien parent.</p>
+      </section>
+
+      <!-- CLASSES -->
+      <section class="doc" id="classes">
+        <h2><span class="ic">🏫</span> Classes & cycles</h2>
+        <div class="role-tags"><span class="rt">Directeur</span><span class="rt">Secrétariat</span><span class="rt">Économe</span></div>
+        <p class="lead">Création des classes et affectation du cycle.</p>
+        <h3>Créer une classe</h3>
+        <ol class="steps">
+          <li>Ouvrez le module Classes, puis saisissez le nom (ex. « 6e A »).</li>
+          <li>Indiquez le niveau (texte libre : Collège, Lycée, etc.).</li>
+          <li>Choisissez le <strong>cycle</strong> : Premier cycle ou Second cycle.</li>
+          <li>Affectez un titulaire et, si besoin, les frais de scolarité.</li>
+        </ol>
+        <h3>Comprendre les cycles</h3>
+        <p>Les cycles sont communs à tous les systèmes camerounais, même si les noms de classes varient :</p>
+        <ul>
+          <li><strong>Premier cycle</strong> : de la 6e à la 3e (francophone général), Form 1 à Form 5 (anglophone), 1ère à 4e année (technique).</li>
+          <li><strong>Second cycle</strong> : de la 2nde à la Terminale (général), Lower 6 et Upper 6 (anglophone).</li>
+        </ul>
+        <div class="callout info"><span class="t">Bon à savoir</span> « Lycée » et « Collège » désignent le type d'établissement (public / privé), pas le cycle. Le cycle se choisit indépendamment.</div>
+      </section>
+
+      <!-- PERSONNEL -->
+      <section class="doc" id="personnel">
+        <h2><span class="ic">👥</span> Personnel</h2>
+        <div class="role-tags"><span class="rt">Directeur</span><span class="rt">Secrétariat</span></div>
+        <p class="lead">Gestion du corps enseignant et administratif.</p>
+        <ol class="steps">
+          <li>Ouvrez Personnel, puis « Nouveau ».</li>
+          <li>Renseignez l'identité, la fonction et le rôle.</li>
+          <li>Enregistrez : le membre pourra ensuite être désigné titulaire d'une classe ou affecté à des matières.</li>
+        </ol>
+      </section>
+
+      <!-- MATIERES -->
+      <section class="doc" id="matieres">
+        <h2><span class="ic">📚</span> Matières</h2>
+        <div class="role-tags"><span class="rt">Directeur</span><span class="rt">Secrétariat</span></div>
+        <p class="lead">Définition des matières enseignées et de leurs coefficients.</p>
+        <p>Créez chaque matière avec son nom, son code, son domaine et son <strong>coefficient</strong> (utilisé pour calculer les moyennes des bulletins). Vous pouvez affecter une matière à toutes les classes d'un seul coup. Les affectations relient ensuite un enseignant à une matière dans une classe donnée.</p>
+      </section>
+
+      <!-- NOTES -->
+      <section class="doc" id="notes">
+        <h2><span class="ic">📝</span> Notes</h2>
+        <div class="role-tags"><span class="rt">Directeur</span><span class="rt">Enseignant</span></div>
+        <p class="lead">Saisie des notes par classe, matière et séquence.</p>
+        <ol class="steps">
+          <li>Sélectionnez la classe, la matière et la séquence.</li>
+          <li>Saisissez la note de chaque élève (sur 20 par défaut).</li>
+          <li>Enregistrez : la saisie se fait en lot pour aller plus vite.</li>
+        </ol>
+        <div class="callout tip"><span class="t">Astuce</span> Une note déjà saisie est automatiquement mise à jour si vous la corrigez — pas de doublon.</div>
+      </section>
+
+      <!-- BULLETINS -->
+      <section class="doc" id="bulletins">
+        <h2><span class="ic">📄</span> Bulletins</h2>
+        <div class="role-tags"><span class="rt">Directeur</span><span class="rt">Enseignant</span></div>
+        <p class="lead">Génération des bulletins par séquence, trimestre ou année.</p>
+        <ol class="steps">
+          <li>Choisissez la classe et la période (séquence, trimestre ou année).</li>
+          <li>Sélectionnez l'élève.</li>
+          <li>Le bulletin calcule les moyennes pondérées par les coefficients, le rang, l'effectif et les appréciations.</li>
+          <li>Imprimez ou exportez.</li>
+        </ol>
+        <div class="callout info"><span class="t">Anti-fraude</span> Chaque bulletin porte un code de vérification signé qui garantit son authenticité.</div>
+      </section>
+
+      <!-- PRESENCE -->
+      <section class="doc" id="presence">
+        <h2><span class="ic">🗓️</span> Présence</h2>
+        <div class="role-tags"><span class="rt">Directeur</span><span class="rt">Enseignant</span><span class="rt">Surveillant général</span></div>
+        <p class="lead">Suivi des absences et des retards.</p>
+        <p>Enregistrez pour chaque élève et chaque séquence les absences (justifiées ou non) et les retards. Ces données alimentent automatiquement la rubrique discipline du bulletin.</p>
+      </section>
+
+      <!-- DISCIPLINE -->
+      <section class="doc" id="discipline">
+        <h2><span class="ic">🛡️</span> Discipline</h2>
+        <div class="role-tags"><span class="rt">Directeur</span><span class="rt">Surveillant général</span><span class="rt">Secrétariat</span><span class="rt">Enseignant</span></div>
+        <p class="lead">Suivi des incidents et des sanctions.</p>
+        <ol class="steps">
+          <li>Créez un incident : élève concerné, type, gravité et description.</li>
+          <li>Précisez la sanction et qui l'a décidée.</li>
+          <li>Suivez le statut : planifié, exécuté, classé ou annulé.</li>
+        </ol>
+        <p>Les incidents apparaissent aussi dans l'espace parent, dans la rubrique « Vie scolaire ».</p>
+      </section>
+
+      <!-- INFIRMERIE -->
+      <section class="doc" id="infirmerie">
+        <h2><span class="ic">➕</span> Infirmerie</h2>
+        <div class="role-tags"><span class="rt">Directeur</span><span class="rt">Infirmière</span></div>
+        <p class="lead">Suivi des passages à l'infirmerie et du dossier de santé.</p>
+        <p>Enregistrez chaque passage avec le motif et les soins prodigués. Vous conservez ainsi l'historique de santé de chaque élève, utile pour le suivi médical scolaire.</p>
+      </section>
+
+      <!-- SCOLARITE -->
+      <section class="doc" id="scolarite">
+        <h2><span class="ic">💳</span> Scolarité & paiements</h2>
+        <div class="role-tags"><span class="rt">Directeur</span><span class="rt">Économe</span></div>
+        <p class="lead">Encaissement des frais et suivi du recouvrement.</p>
+        <h3>Enregistrer un paiement</h3>
+        <ol class="steps">
+          <li>Ouvrez Scolarité, puis « Enregistrer un paiement ».</li>
+          <li>Choisissez l'élève et saisissez le montant.</li>
+          <li>Sélectionnez le mode : espèces, chèque, Mobile Money, virement.</li>
+          <li>Validez : un reçu est généré automatiquement.</li>
+        </ol>
+        <h3>Échéances et recouvrement</h3>
+        <p>Les échéances découpent la scolarité d'une classe en tranches datées. Le système calcule alors le <strong>dû à jour</strong> (ce qui est exigible à la date du jour) et identifie les élèves en retard de paiement. La vue par classe montre les soldes, et la fiche d'un élève permet de journaliser les relances.</p>
+      </section>
+
+      <!-- CAMPAY -->
+      <section class="doc" id="campay">
+        <h2><span class="ic">📱</span> Mobile Money (Campay)</h2>
+        <div class="role-tags"><span class="rt">Directeur</span><span class="rt">Économe</span><span class="rt">Parent</span></div>
+        <p class="lead">Encaissement par MTN Mobile Money et Orange Money.</p>
+        <h3>Côté école (économe)</h3>
+        <ol class="steps">
+          <li>Dans Scolarité, ouvrez la carte « Mobile Money (Campay) ».</li>
+          <li>Recherchez l'élève et saisissez le montant.</li>
+          <li>Indiquez le numéro Mobile Money du parent.</li>
+          <li>Le parent reçoit une demande de paiement sur son téléphone et valide avec son code PIN.</li>
+        </ol>
+        <h3>Côté parent</h3>
+        <p>Depuis l'espace parent, si un solde reste dû, un bouton « Payer la scolarité » permet au parent de payer lui-même, en saisissant son numéro et en validant sur son téléphone. Le solde se met à jour automatiquement après confirmation.</p>
+        <div class="callout info"><span class="t">Bon à savoir</span> Le paiement peut être partiel : le parent choisit le montant qu'il souhaite régler.</div>
+      </section>
+
+      <!-- DF -->
+      <section class="doc" id="df">
+        <h2><span class="ic">📈</span> Direction financière</h2>
+        <div class="role-tags"><span class="rt">Directeur</span><span class="rt">Économe</span></div>
+        <p class="lead">Synthèse stratégique des finances de l'établissement.</p>
+        <p>Ce module présente l'évolution mensuelle des encaissements (réel comparé au prévisionnel), la répartition par mode de paiement, une projection des encaissements sur trois mois, ainsi que la performance de recouvrement par niveau scolaire. Utile pour piloter la trésorerie de l'école.</p>
+      </section>
+
+      <!-- EDT -->
+      <section class="doc" id="edt">
+        <h2><span class="ic">⏰</span> Emploi du temps</h2>
+        <div class="role-tags"><span class="rt">Directeur</span><span class="rt">Secrétariat</span><span class="rt">Enseignant</span><span class="rt">Économe</span><span class="rt">Surveillant général</span></div>
+        <p class="lead">Construction et consultation des emplois du temps.</p>
+        <p>Ajoutez les cours en précisant le jour, l'heure de début et de fin, la classe, la matière, l'enseignant et la salle. Le système signale les conflits (même enseignant ou même salle au même moment). Les parents peuvent consulter l'emploi du temps de la classe de leur enfant depuis leur espace.</p>
+      </section>
+
+      <!-- PARENT -->
+      <section class="doc" id="parent">
+        <h2><span class="ic">👨‍👩‍👧</span> Espace parent</h2>
+        <div class="role-tags"><span class="rt">Directeur</span><span class="rt">Secrétariat</span><span class="rt">Parent</span></div>
+        <p class="lead">Un accès en lecture seule, sécurisé, réservé aux parents.</p>
+        <h3>Partager l'accès</h3>
+        <p>Depuis la fiche d'un élève, utilisez « Copier lien parent » et transmettez ce lien au parent (par WhatsApp ou SMS). Le lien est signé : il ne donne accès qu'aux informations de cet élève.</p>
+        <h3>Plusieurs enfants</h3>
+        <p>Si un parent a plusieurs enfants dans l'école et que ceux-ci partagent le <strong>même numéro de téléphone</strong>, un sélecteur « Mes enfants » apparaît en haut de l'espace parent. Le parent bascule d'un enfant à l'autre depuis un seul lien.</p>
+        <h3>Ce que voit le parent</h3>
+        <ul>
+          <li>La scolarité : montant dû, payé, solde, et possibilité de payer par Mobile Money.</li>
+          <li>Les résultats : moyennes, rang, appréciations.</li>
+          <li>La vie scolaire : notes de conduite et incidents.</li>
+          <li>L'emploi du temps de la classe.</li>
+          <li>Le certificat de scolarité, à télécharger ou imprimer.</li>
+        </ul>
+        <div class="callout tip"><span class="t">Astuce</span> L'espace parent est bilingue : le parent peut basculer entre français et anglais.</div>
+      </section>
+
+      <!-- COMPTES -->
+      <section class="doc" id="comptes">
+        <h2><span class="ic">🔐</span> Comptes & sécurité</h2>
+        <div class="role-tags"><span class="rt">Directeur</span><span class="rt">Informaticien</span></div>
+        <p class="lead">Création et gestion des comptes utilisateurs.</p>
+        <ol class="steps">
+          <li>Ouvrez Utilisateurs, puis « Nouveau compte ».</li>
+          <li>Renseignez l'identité, l'e-mail et choisissez le rôle.</li>
+          <li>Définissez un mot de passe provisoire : l'utilisateur devra le changer à sa première connexion.</li>
+        </ol>
+        <p>Vous pouvez aussi réinitialiser un mot de passe, activer ou désactiver un compte. Pour des raisons de sécurité, vous ne pouvez ni modifier votre propre rôle, ni désactiver votre propre compte.</p>
+      </section>
+
+      <!-- GLOSSAIRE -->
+      <section class="doc" id="glossaire">
+        <h2><span class="ic">📖</span> Glossaire</h2>
+        <p class="lead">Les termes clés employés dans Edufo.</p>
+        <dl class="glossary">
+          <dt>Cycle</dt><dd>Grande division du cursus : premier cycle (avant le baccalauréat intermédiaire) et second cycle (jusqu'à la Terminale).</dd>
+          <dt>Séquence</dt><dd>Période d'évaluation courte ; plusieurs séquences composent un trimestre.</dd>
+          <dt>Recouvrement</dt><dd>Suivi et collecte des frais de scolarité dus par les familles.</dd>
+          <dt>Dû à jour</dt><dd>Montant de scolarité exigible à la date du jour, calculé à partir des échéances passées.</dd>
+          <dt>Échéance</dt><dd>Tranche datée du paiement de la scolarité (ex. 1ère tranche en octobre).</dd>
+          <dt>Titulaire</dt><dd>Enseignant principal responsable d'une classe.</dd>
+          <dt>Coefficient</dt><dd>Poids d'une matière dans le calcul de la moyenne générale.</dd>
+          <dt>Espace parent</dt><dd>Page en lecture seule, accessible par un lien sécurisé, où le parent suit la scolarité de son enfant.</dd>
+        </dl>
+      </section>
+
+      <!-- FAQ -->
+      <section class="doc" id="faq">
+        <h2><span class="ic">❓</span> Dépannage (FAQ)</h2>
+        <p class="lead">Réponses aux questions et problèmes les plus courants.</p>
+        <h3>Je ne vois pas un module dans le menu</h3>
+        <p>L'accès aux modules dépend de votre rôle. Si un module vous manque, contactez le directeur ou l'informaticien pour vérifier votre profil.</p>
+        <h3>Les frères et sœurs ne sont pas regroupés dans l'espace parent</h3>
+        <p>Vérifiez que les élèves concernés ont exactement le même numéro de téléphone parent. Une différence d'écriture (espaces, préfixe +237) peut empêcher le regroupement — corrigez la saisie dans les fiches élèves.</p>
+        <h3>Un paiement Mobile Money n'apparaît pas</h3>
+        <p>Demandez au parent de valider la demande sur son téléphone avec son code PIN, puis cliquez sur « Vérifier le statut ». La confirmation peut prendre quelques instants.</p>
+        <h3>Les données affichées semblent fausses</h3>
+        <p>Vérifiez que la bonne <strong>année scolaire</strong> est sélectionnée en haut à droite. La plupart des écrans affichent les données de l'année choisie.</p>
+
+        <footer class="docfoot">
+          <p><strong>Besoin d'aide ?</strong> Contactez le support Atlastech Solution :<br>
+          📧 <a href="mailto:edufo@atlastech.cm">edufo@atlastech.cm</a> &nbsp;·&nbsp; 📞 <a href="tel:+237622524544">+237 622 52 45 44</a></p>
+          <p style="margin-top:10px;">Edufo — Plateforme de gestion scolaire · Atlastech Solution · Douala, Cameroun · Version 1.0</p>
+        </footer>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<script>
+  // Surlignage de la section active dans le sommaire
+  const links = Array.from(document.querySelectorAll('.toc a'));
+  const sections = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  function onScroll() {
+    let current = sections[0];
+    const offset = 90;
+    for (const s of sections) {
+      if (s.getBoundingClientRect().top - offset <= 0) current = s;
+    }
+    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + (current ? current.id : '')));
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Recherche : filtre les entrées du sommaire ET masque les sections non correspondantes
+  function filterToc(q) {
+    q = (q || '').trim().toLowerCase();
+    const noResult = document.getElementById('noResult');
+    if (!q) {
+      links.forEach(a => a.style.display = '');
+      document.querySelectorAll('.toc .group').forEach(g => g.style.display = '');
+      sections.forEach(s => s.style.display = '');
+      noResult.style.display = 'none';
+      return;
+    }
+    let anyVisible = false;
+    sections.forEach(s => {
+      const text = s.textContent.toLowerCase();
+      const match = text.includes(q);
+      s.style.display = match ? '' : 'none';
+      const link = links.find(a => a.getAttribute('href') === '#' + s.id);
+      if (link) link.style.display = match ? '' : 'none';
+      if (match) anyVisible = true;
+    });
+    document.querySelectorAll('.toc .group').forEach(g => g.style.display = 'none');
+    noResult.style.display = anyVisible ? 'none' : 'block';
+  }
+
+  // Menu mobile
+  function toggleMenu() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('overlayM').classList.toggle('show');
+  }
+  document.querySelectorAll('.toc a').forEach(a => a.addEventListener('click', () => {
+    if (window.innerWidth <= 900) toggleMenu();
+  }));
+</script>
+</body>
+</html>
